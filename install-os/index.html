@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>记一次装机过程 - 伏枫的个人网站</title><meta name="Description" content="伏枫的网站"><meta property="og:title" content="记一次装机过程" />
+<meta property="og:description" content="起因 老婆使用的电脑系统（Windows 10）坏了，会一直卡在登录页面，登录成功之后又返回登录页面，陷入死循环。 于是，修好电脑的重担就落在了笔" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://murphy-huang.gitee.io/install-os/" /><meta property="og:image" content="https://murphy-huang.gitee.io/"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-04-20T20:57:47+08:00" />
+<meta property="article:modified_time" content="2023-04-23T16:46:49+08:00" /><meta property="og:site_name" content="伏枫的网站" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://murphy-huang.gitee.io/"/>
+
+<meta name="twitter:title" content="记一次装机过程"/>
+<meta name="twitter:description" content="起因 老婆使用的电脑系统（Windows 10）坏了，会一直卡在登录页面，登录成功之后又返回登录页面，陷入死循环。 于是，修好电脑的重担就落在了笔"/>
+<meta name="application-name" content="伏枫的个人网站">
+<meta name="apple-mobile-web-app-title" content="伏枫的个人网站"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://murphy-huang.gitee.io/install-os/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "记一次装机过程",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/murphy-huang.gitee.io\/install-os\/"
+        },"image": ["https:\/\/murphy-huang.gitee.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","wordcount":  876 ,
+        "url": "https:\/\/murphy-huang.gitee.io\/install-os\/","datePublished": "2023-04-20T20:57:47+08:00","dateModified": "2023-04-23T16:46:49+08:00","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": "https:\/\/murphy-huang.gitee.io\/images\/avatar.png"},"author": {
+                "@type": "Person",
+                "name": "伏枫"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="伏枫的个人网站">伏枫的网站</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="伏枫的个人网站">伏枫的网站</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">记一次装机过程</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>伏枫</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-04-20">2023-04-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;876 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#起因">起因</a></li>
+    <li><a href="#磨难">磨难</a>
+      <ul>
+        <li><a href="#制作装机-u-盘">制作装机 U 盘</a>
+          <ul>
+            <li><a href="#解决办法">解决办法</a></li>
+          </ul>
+        </li>
+        <li><a href="#硬盘分区和格式化">硬盘分区和格式化</a>
+          <ul>
+            <li><a href="#解决办法-1">解决办法</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="起因">起因</h2>
+<p>老婆使用的电脑系统（Windows 10）坏了，会一直卡在登录页面，登录成功之后又返回登录页面，陷入死循环。</p>
+<p>于是，修好电脑的重担就落在了笔者的头上。</p>
+<p>笔者脑子一热，直接装了一个 Ubuntu 系统（装机过程省略，网上很多教程），然后又吭哧吭哧地安装了微信和QQ，但是用起来非常不得劲，微信还好，除了UI偏小没啥大问题，但是 QQ 就丑爆了~</p>
+<p>迫不得已，只好重新安装 Windows 系统，磨难正式开始~~</p>
+<h2 id="磨难">磨难</h2>
+<h3 id="制作装机-u-盘">制作装机 U 盘</h3>
+<p>以前有过制作装机 U 盘的经历，不过是使用了大白菜（<a href="https://www.dabaicai.com/" target="_blank" rel="noopener noreffer ">大白菜官网</a>），然而大白菜支持在 Windows 系统上制作装机 U 盘，本人的 Windows 电脑已经坏了，工作电脑是 Mac，所以大白菜就没法使用了。</p>
+<p>之前安装 Ubuntu 系统，是使用 <a href="https://www.balena.io/etcher/" target="_blank" rel="noopener noreffer ">Etcher</a> 制作装机 U 盘。但是制作的 Windows 系统装机 U 盘是无法正常使用的，在尝试从 U 盘启动系统时，也无法正常启动。</p>
+<p>然后尝试了使用命令行工具制作装机 U 盘，命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">diskutil eraseDisk FAT32 <span class="s2">&#34;WINDOWS10&#34;</span> MBR disk4
+</span></span><span class="line"><span class="cl">cp -rpv /Volumes/CCHA_X64FREO_ZH-CN_DV9/* /Volumes/WINDOWS10
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是在安装的时候提示 install.win 损坏。经过查询，原来是 FAT32 格式的文件系统无法存储单个大于 4GB 的文件，导致 install.win 文件损坏了。</p>
+<h4 id="解决办法">解决办法</h4>
+<ul>
+<li>第一步，分割一下 Windows 镜像，使其能够完整的写入 FAT32 格式的 U 盘中，分割的方式是使用 <a href="https://twocanoes.com/using-larger-windows-10-isos-with-boot-camp-assistant/" target="_blank" rel="noopener noreffer ">Boot Camp ISO Converter</a>，下载地址如下图所示
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/1d8bd35634d742c2ae211d508da82f13.png"
+        data-srcset="/images/1d8bd35634d742c2ae211d508da82f13.png, /images/1d8bd35634d742c2ae211d508da82f13.png 1.5x, /images/1d8bd35634d742c2ae211d508da82f13.png 2x"
+        data-sizes="auto"
+        alt="/images/1d8bd35634d742c2ae211d508da82f13.png"
+        title="boot camp ISO converter" /></li>
+<li>第二步，格式化 U 盘</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># disk4 需要替换成 U 盘的盘符，可以使用命令 diskutil list 查看</span>
+</span></span><span class="line"><span class="cl">diskutil eraseDisk FAT32 <span class="s2">&#34;WINDOWS10&#34;</span> MBR disk4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>第三步，双击下载的 Windows 镜像，使其在 Mac 上挂载，此时可以通过 diskutil list 查看对应的盘符</li>
+<li>第四步，通过 CP 命令拷贝镜像到 U 盘中</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp -rpv /Volumes/CCHA_X64FREO_ZH-CN_DV9/* /Volumes/WINDOWS10
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="硬盘分区和格式化">硬盘分区和格式化</h3>
+<p>制作完装机 U 盘后，在装机时遇到另一个问题： Windows 系统只能安装在 NTFS 的文件系统中。而在安装 Ubuntu 系统时，电脑硬盘已经格式化成了 EXT3 的文件系统，所以需要重新格式化硬盘。然后就遭遇了各种格式化硬盘的打击：</p>
+<ul>
+<li>格式化时提示硬盘使用中</li>
+<li>umount 时提示<code>umount: target is busy</code></li>
+</ul>
+<h4 id="解决办法-1">解决办法</h4>
+<ul>
+<li>第一步，使用 Unetbootin 制作 Gparted 启动盘
+Unetbootin 下载地址： <a href="https://unetbootin.github.io/" target="_blank" rel="noopener noreffer ">unetbootin</a>
+Gparted 镜像下载地址： <a href="https://gparted.org/download.php" target="_blank" rel="noopener noreffer ">gparted</a></li>
+<li>第二步，使用第一步制作的 Gparted 启动盘格式化硬盘和分区
+这里建议分区后再格式化，这样可以不影响原本的 Ubuntu 系统，也就是可以双系统。具体步骤可以参考 <a href="https://gparted.org/display-doc.php?name=moving-space-between-partitions" target="_blank" rel="noopener noreffer ">gparted 教程</a></li>
+</ul>
+<h2 id="references">References</h2>
+<p><a href="https://zhuanlan.zhihu.com/p/273305963" target="_blank" rel="noopener noreffer ">知乎: 2021年mac系统下制作win10引导安装盘，亲测可用</a></p>
+<p><a href="https://dalewushuang.blog.csdn.net/article/details/90475070" target="_blank" rel="noopener noreffer ">[详细教程] 在现有Ubuntu系统上安装Windows 10 （双系统）</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-04-23</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/install-os/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://murphy-huang.gitee.io/install-os/" data-title="记一次装机过程"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://murphy-huang.gitee.io/install-os/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://murphy-huang.gitee.io/install-os/" data-title="记一次装机过程"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://murphy-huang.gitee.io/install-os/" data-title="记一次装机过程"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://murphy-huang.gitee.io/install-os/" data-title="记一次装机过程" data-ralateuid="fufeng"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.111.3">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">伏枫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.13.1/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"algoliaAppID":"","algoliaIndex":"","algoliaSearchKey":"","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

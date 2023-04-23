@@ -1,0 +1,18 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>伏枫的个人网站</title>
+        <link>https://murphy-huang.gitee.io/</link>
+        <description>伏枫的网站</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>530843219@qq.com (伏枫)</managingEditor>
+            <webMaster>530843219@qq.com (伏枫)</webMaster><lastBuildDate>Thu, 20 Apr 2023 20:57:47 &#43;0800</lastBuildDate>
+            <atom:link href="https://murphy-huang.gitee.io/index.xml" rel="self" type="application/rss+xml" />
+        <item>
+    <title>记一次装机过程</title>
+    <link>https://murphy-huang.gitee.io/install-os/</link>
+    <pubDate>Thu, 20 Apr 2023 20:57:47 &#43;0800</pubDate>
+    <author>伏枫</author>
+    <guid>https://murphy-huang.gitee.io/install-os/</guid>
+    <description><![CDATA[起因 老婆使用的电脑系统（Windows 10）坏了，会一直卡在登录页面，登录成功之后又返回登录页面，陷入死循环。 于是，修好电脑的重担就落在了笔]]></description>
+</item>
+</channel>
+</rss>
