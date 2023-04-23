@@ -24,7 +24,7 @@ cp -rpv /Volumes/CCHA_X64FREO_ZH-CN_DV9/* /Volumes/WINDOWS10
 
 #### 解决办法
 * 第一步，分割一下 Windows 镜像，使其能够完整的写入 FAT32 格式的 U 盘中，分割的方式是使用 [Boot Camp ISO Converter](https://twocanoes.com/using-larger-windows-10-isos-with-boot-camp-assistant/)，下载地址如下图所示
-![boot camp ISO converter](/images/1d8bd35634d742c2ae211d508da82f13.png)
+![boot camp ISO converter](/fufeng/images/1d8bd35634d742c2ae211d508da82f13.png)
 * 第二步，格式化 U 盘
 ```bash
 # disk4 需要替换成 U 盘的盘符，可以使用命令 diskutil list 查看
