@@ -46,7 +46,8 @@ Gparted 镜像下载地址： [gparted](https://gparted.org/download.php)
 * 第二步，使用第一步制作的 Gparted 启动盘格式化硬盘和分区
 这里建议分区后再格式化，这样可以不影响原本的 Ubuntu 系统，也就是可以双系统。具体步骤可以参考 [gparted 教程](https://gparted.org/display-doc.php?name=moving-space-between-partitions)
 
-## References
+## 参考
+
  [知乎: 2021年mac系统下制作win10引导安装盘，亲测可用](https://zhuanlan.zhihu.com/p/273305963)
 
  [[详细教程] 在现有Ubuntu系统上安装Windows 10 （双系统）](https://dalewushuang.blog.csdn.net/article/details/90475070)
