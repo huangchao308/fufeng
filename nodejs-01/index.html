@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>为什么说 NodeJs 适合 I/O 密集型系统？ - 伏枫的个人网站</title><meta name="Description" content="伏枫的网站"><meta property="og:title" content="为什么说 NodeJs 适合 I/O 密集型系统？" />
+<meta property="og:description" content="一句话答案 主要因为两点，一是 NodeJs 采用了非阻塞异步 I/O 模型，二是 NodeJs 是基于事件驱动的编程模型。 详细解答 Node.js 是单线程的，采用了非阻塞异步 I/O 模型，可以在等" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://huangchao308.github.io/fufeng/nodejs-01/" /><meta property="og:image" content="https://huangchao308.github.io/fufeng/"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-05-09T14:47:48+08:00" />
+<meta property="article:modified_time" content="2023-05-09T14:47:48+08:00" /><meta property="og:site_name" content="伏枫的网站" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://huangchao308.github.io/fufeng/"/>
+
+<meta name="twitter:title" content="为什么说 NodeJs 适合 I/O 密集型系统？"/>
+<meta name="twitter:description" content="一句话答案 主要因为两点，一是 NodeJs 采用了非阻塞异步 I/O 模型，二是 NodeJs 是基于事件驱动的编程模型。 详细解答 Node.js 是单线程的，采用了非阻塞异步 I/O 模型，可以在等"/>
+<meta name="application-name" content="伏枫的个人网站">
+<meta name="apple-mobile-web-app-title" content="伏枫的个人网站"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://huangchao308.github.io/fufeng/nodejs-01/" /><link rel="prev" href="https://huangchao308.github.io/fufeng/install-os/" /><link rel="stylesheet" href="/fufeng/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "为什么说 NodeJs 适合 I/O 密集型系统？",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/huangchao308.github.io\/fufeng\/nodejs-01\/"
+        },"image": ["https:\/\/huangchao308.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","wordcount":  1494 ,
+        "url": "https:\/\/huangchao308.github.io\/fufeng\/nodejs-01\/","datePublished": "2023-05-09T14:47:48+08:00","dateModified": "2023-05-09T14:47:48+08:00","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": "https:\/\/huangchao308.github.io\/images\/avatar.png"},"author": {
+                "@type": "Person",
+                "name": "伏枫"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/fufeng/" title="伏枫的个人网站">伏枫的网站</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/fufeng/posts/"> Posts </a><a class="menu-item" href="/fufeng/tags/"> Tags </a><a class="menu-item" href="/fufeng/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/fufeng/" title="伏枫的个人网站">伏枫的网站</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/fufeng/posts/" title="">Posts</a><a class="menu-item" href="/fufeng/tags/" title="">Tags</a><a class="menu-item" href="/fufeng/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">为什么说 NodeJs 适合 I/O 密集型系统？</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/fufeng/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>伏枫</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-05-09">2023-05-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1494 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一句话答案">一句话答案</a></li>
+    <li><a href="#详细解答">详细解答</a>
+      <ul>
+        <li><a href="#nodejs-如何实现事件驱动的异步-io-模型">NodeJs 如何实现事件驱动的异步 I/O 模型？</a>
+          <ul>
+            <li><a href="#libuv-的事件循环">libuv 的事件循环</a></li>
+            <li><a href="#nodejs-的完整事件循环">nodejs 的完整事件循环</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#参考文档">参考文档</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="一句话答案">一句话答案</h2>
+<p>主要因为两点，一是 NodeJs 采用了非阻塞异步 I/O 模型，二是 NodeJs 是基于事件驱动的编程模型。</p>
+<h2 id="详细解答">详细解答</h2>
+<ul>
+<li>Node.js 是单线程的，采用了非阻塞异步 I/O 模型，可以在等待 I/O 操作（如读取文件、网络请求等）时让 CPU 去做其他工作，等数据返回后再去执行回调函数。这样可以充分利用 CPU 的时间，提高处理 I/O 密集型任务的效率。</li>
+<li>Node.js 基于事件驱动的编程模型，通过注册事件监听器来处理请求。当有请求到来时，Node.js 会把请求交给事件循环处理，等待响应后再把结果返回。这样可以实现高并发、低延迟的服务。同时，事件驱动的编程模型也适用于处理数据流、实现内存占用小等场景。</li>
+</ul>
+<p>综上所述，Node.js 适合处理高并发、响应时间短、I/O 密集型任务，如 Web 应用中的 HTTP 请求、文件读写、数据库操作等。</p>
+<h3 id="nodejs-如何实现事件驱动的异步-io-模型">NodeJs 如何实现事件驱动的异步 I/O 模型？</h3>
+<p>NodeJs 通过 libuv 库实现非阻塞异步 I/O 模型。libuv 为 NodeJs 提供了统一的 I/O 接口，抹平了不同操作系统之间的 I/O 操作差异。下图是 libuv 的架构图： <img
+        class="lazyload"
+        src="/fufeng/svg/loading.min.svg"
+        data-src="/fufeng/images/node-libuv-architecture.png"
+        data-srcset="/fufeng/images/node-libuv-architecture.png, /fufeng/images/node-libuv-architecture.png 1.5x, /fufeng/images/node-libuv-architecture.png 2x"
+        data-sizes="auto"
+        alt="/fufeng/images/node-libuv-architecture.png"
+        title="architecture.png" /></p>
+<h4 id="libuv-的事件循环">libuv 的事件循环</h4>
+<p>libuv 的核心是事件循环，事件循环采用单线程异步I/O的方法：所有（网络）I/O都在非阻塞的套接字上执行，由操作系统提供最佳机制进行轮询：Linux上的epoll、OSX和其他BSD上的kqueue、SunOS上的事件端口和Windows上的IOCP。在循环迭代的一部分中，循环将阻塞等待已添加到轮询器中的套接字上的I/O活动，并触发回调以指示套接字状态（可读、可写、挂起），以便句柄可以执行所需的读取、写入或I/O操作。下图展示了事件循环的各个阶段：</p>
+<p><img
+        class="lazyload"
+        src="/fufeng/svg/loading.min.svg"
+        data-src="/fufeng/images/node-libuv-loop_iteration.png"
+        data-srcset="/fufeng/images/node-libuv-loop_iteration.png, /fufeng/images/node-libuv-loop_iteration.png 1.5x, /fufeng/images/node-libuv-loop_iteration.png 2x"
+        data-sizes="auto"
+        alt="/fufeng/images/node-libuv-loop_iteration.png"
+        title="loop_iteration.png" /></p>
+<ul>
+<li>在每轮事件循环迭代开始之前，NodeJs 会缓存当前时间，用于后续判断定时器是否到达执行时间。如果事件循环仍然存活着，那么开始进入事件循环，否则结束循环，杀掉线程。</li>
+<li>事件循环的第一个阶段是 <code>Run due timers</code> 阶段（定时器阶段），用于执行已经到期的定时器回调函数，即通过 <code>setTimeout</code> 或者 <code>setInterval</code> 函数注册的回调函数。</li>
+<li>事件循环的第二个阶段是 <code>Call pending callbacks</code> 阶段，这个阶段是执行在上个迭代中没有执行完毕的 I/O 回调函数</li>
+<li>事件循环的第三个阶段是 <code>Run idle handles</code> 阶段，这个阶段执行 nodejs 内部注册的回调函数</li>
+<li>事件循环的第四个阶段是 <code>Run prepare handles</code> 阶段，本阶段执行 nodejs 内部注册的回调函数，用于准备即将启动的<code>Poll for I/O</code>阶段。它的主要作用是在执行轮询阶段之前运行一些准备工作，例如打开或关闭某些资源，初始化或重置一些状态等。</li>
+<li>事件循环的第五个阶段是 <code>Poll for I/O</code> 阶段, 在这个阶段会阻塞等待操作系统的 I/O 操作，如果有写/读操作完成，则会在这个时候调用相关的回调函数。这个阶段的阻塞等待时长是按照如下规则计算的：
+<ul>
+<li>如果事件循环使用 <code>UV_RUN_NOWAIT</code> 标志运行，则等待时长为 0</li>
+<li>如果事件循环正在被中止(<code>uv_stop</code>函数被调用)，则等待时长为 0</li>
+<li>如果没有活动的句柄或请求(没有打开文件描述符且没有 socket 连接)，则等待时长为 0</li>
+<li>如果有 <code>idle handles</code> 存在，则等待时长为 0</li>
+<li>如果有句柄正在等待关闭，则等待时长为 0</li>
+<li>如果上述情况都不符合，则取最接近的定时器的超时时间；如果没有注册定时器，则等待时长为无限（直到某个 I/O 操作完成）</li>
+</ul>
+</li>
+<li>事件循环的第六个阶段是 <code>Run check handles</code> 阶段，这个阶段执行 <code>setImmediate</code> 注册的回调函数</li>
+<li>事件循环的第七个阶段是 <code>Call close callbacks</code> 阶段，所有 <code>close</code> 事件注册的回调函数在这个阶段执行</li>
+</ul>
+<h4 id="nodejs-的完整事件循环">nodejs 的完整事件循环</h4>
+<p>nodejs 在 libuv 的事件循环的基础上增加了两个任务队列，分别是 <code>nextTick</code> 和 <code>promise 微任务队列</code>。完整的 nodejs 事件循环可参考图：
+<img
+        class="lazyload"
+        src="/fufeng/svg/loading.min.svg"
+        data-src="/fufeng/images/full_nodejs_event_loop.png"
+        data-srcset="/fufeng/images/full_nodejs_event_loop.png, /fufeng/images/full_nodejs_event_loop.png 1.5x, /fufeng/images/full_nodejs_event_loop.png 2x"
+        data-sizes="auto"
+        alt="/fufeng/images/full_nodejs_event_loop.png"
+        title="full_nodejs_event_loop.png" /></p>
+<ul>
+<li>
+<p>这两个任务队列并非在 libuv 中被执行，它们都是在 nodejs 层执行的，在 libuv 层处理每一个阶段的任务之后，会和 node 层进行通讯，那么会优先处理两个队列中的任务。<strong>注意： 这两个任务队列的执行会阻塞 <code>libuv</code> 的事件循环</strong></p>
+</li>
+<li>
+<p>nextTick 任务的优先级要大于 Microtasks 任务中的 Promise 回调。也就是说 node 会首先清空 nextTick 中的任务，然后才是 Promise 中的任务。</p>
+</li>
+</ul>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="http://docs.libuv.org/en/v1.x/design.html" target="_blank" rel="noopener noreffer ">libuv 1.45.1-dev documentation » Design overview</a></p>
+<p><a href="https://juejin.cn/post/7002106372200333319" target="_blank" rel="noopener noreffer ">「Nodejs万字进阶」一文吃透异步I/O和事件循环</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-05-09</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/fufeng/nodejs-01/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://huangchao308.github.io/fufeng/nodejs-01/" data-title="为什么说 NodeJs 适合 I/O 密集型系统？"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://huangchao308.github.io/fufeng/nodejs-01/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://huangchao308.github.io/fufeng/nodejs-01/" data-title="为什么说 NodeJs 适合 I/O 密集型系统？"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://huangchao308.github.io/fufeng/nodejs-01/" data-title="为什么说 NodeJs 适合 I/O 密集型系统？"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://huangchao308.github.io/fufeng/nodejs-01/" data-title="为什么说 NodeJs 适合 I/O 密集型系统？" data-ralateuid="fufeng"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/fufeng/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/fufeng/install-os/" class="prev" rel="prev" title="记一次装机过程"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>记一次装机过程</a></div>
+</div>
+<div id="comments"><div id="gitalk" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://github.com/gitalk/gitalk"></a>Gitalk</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.111.3">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/fufeng/" target="_blank">伏枫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.13.1/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{"gitalk":{"admin":["huangchao308"],"clientID":"1225f5e9320fa6f48341","clientSecret":"bfe1526e0b04ab41e4731fd143813710611a543e","id":"2023-05-09T14:47:48+08:00","owner":"huangchao308","repo":"fufeng","title":"为什么说 NodeJs 适合 I/O 密集型系统？"}},"search":{"algoliaAppID":"","algoliaIndex":"","algoliaSearchKey":"","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script type="text/javascript" src="/fufeng/js/theme.min.js"></script></body>
+</html>
