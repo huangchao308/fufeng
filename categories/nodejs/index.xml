@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>nodejs - Category - 伏枫的个人网站</title>
+        <link>https://huangchao308.github.io/fufeng/categories/nodejs/</link>
+        <description>nodejs - Category - 伏枫的个人网站</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>530843219@qq.com (伏枫)</managingEditor>
+            <webMaster>530843219@qq.com (伏枫)</webMaster><lastBuildDate>Tue, 09 May 2023 14:47:48 &#43;0800</lastBuildDate><atom:link href="https://huangchao308.github.io/fufeng/categories/nodejs/" rel="self" type="application/rss+xml" /><item>
+    <title>为什么说 NodeJs 适合 I/O 密集型系统？</title>
+    <link>https://huangchao308.github.io/fufeng/nodejs-01/</link>
+    <pubDate>Tue, 09 May 2023 14:47:48 &#43;0800</pubDate>
+    <author>伏枫</author>
+    <guid>https://huangchao308.github.io/fufeng/nodejs-01/</guid>
+    <description><![CDATA[一句话答案 主要因为两点，一是 NodeJs 采用了非阻塞异步 I/O 模型，二是 NodeJs 是基于事件驱动的编程模型。 详细解答 Node.js 是单线程的，采用了非阻塞异步 I/O 模型，可以在等]]></description>
+</item>
+</channel>
+</rss>
