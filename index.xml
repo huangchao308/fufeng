@@ -4,9 +4,17 @@
         <link>https://huangchao308.github.io/fufeng/</link>
         <description>伏枫的网站</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>530843219@qq.com (伏枫)</managingEditor>
-            <webMaster>530843219@qq.com (伏枫)</webMaster><lastBuildDate>Tue, 09 May 2023 14:47:48 &#43;0800</lastBuildDate>
+            <webMaster>530843219@qq.com (伏枫)</webMaster><lastBuildDate>Mon, 29 May 2023 17:06:12 &#43;0800</lastBuildDate>
             <atom:link href="https://huangchao308.github.io/fufeng/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>在 Mac 上安装 K8S</title>
+    <link>https://huangchao308.github.io/fufeng/install-k8s-on-mac/</link>
+    <pubDate>Mon, 29 May 2023 17:06:12 &#43;0800</pubDate>
+    <author>伏枫</author>
+    <guid>https://huangchao308.github.io/fufeng/install-k8s-on-mac/</guid>
+    <description><![CDATA[本篇文章将介绍如何在 Mac 上使用 minikube 搭建单机版的 Kubernetes。 安装步骤 安装 Docker 安装 docker 主要是用于提供容器引擎。直接下载安装即可。 下载地址 安装 Kubectl]]></description>
+</item>
+<item>
     <title>为什么说 NodeJs 适合 I/O 密集型系统？</title>
     <link>https://huangchao308.github.io/fufeng/nodejs-01/</link>
     <pubDate>Tue, 09 May 2023 14:47:48 &#43;0800</pubDate>

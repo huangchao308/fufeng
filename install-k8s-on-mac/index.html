@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>在 Mac 上安装 K8S - 伏枫的个人网站</title><meta name="Description" content="伏枫的网站"><meta property="og:title" content="在 Mac 上安装 K8S" />
+<meta property="og:description" content="本篇文章将介绍如何在 Mac 上使用 minikube 搭建单机版的 Kubernetes。 安装步骤 安装 Docker 安装 docker 主要是用于提供容器引擎。直接下载安装即可。 下载地址 安装 Kubectl" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://huangchao308.github.io/fufeng/install-k8s-on-mac/" /><meta property="og:image" content="https://huangchao308.github.io/fufeng/"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-05-29T17:06:12+08:00" />
+<meta property="article:modified_time" content="2023-05-29T17:06:12+08:00" /><meta property="og:site_name" content="伏枫的网站" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://huangchao308.github.io/fufeng/"/>
+
+<meta name="twitter:title" content="在 Mac 上安装 K8S"/>
+<meta name="twitter:description" content="本篇文章将介绍如何在 Mac 上使用 minikube 搭建单机版的 Kubernetes。 安装步骤 安装 Docker 安装 docker 主要是用于提供容器引擎。直接下载安装即可。 下载地址 安装 Kubectl"/>
+<meta name="application-name" content="伏枫的个人网站">
+<meta name="apple-mobile-web-app-title" content="伏枫的个人网站"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://huangchao308.github.io/fufeng/install-k8s-on-mac/" /><link rel="prev" href="https://huangchao308.github.io/fufeng/nodejs-01/" /><link rel="stylesheet" href="/fufeng/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "在 Mac 上安装 K8S",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/huangchao308.github.io\/fufeng\/install-k8s-on-mac\/"
+        },"image": ["https:\/\/huangchao308.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, Kubernetes","wordcount":  903 ,
+        "url": "https:\/\/huangchao308.github.io\/fufeng\/install-k8s-on-mac\/","datePublished": "2023-05-29T17:06:12+08:00","dateModified": "2023-05-29T17:06:12+08:00","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": "https:\/\/huangchao308.github.io\/images\/avatar.png"},"author": {
+                "@type": "Person",
+                "name": "伏枫"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/fufeng/" title="伏枫的个人网站">伏枫的网站</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/fufeng/posts/"> Posts </a><a class="menu-item" href="/fufeng/tags/"> Tags </a><a class="menu-item" href="/fufeng/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/fufeng/" title="伏枫的个人网站">伏枫的网站</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/fufeng/posts/" title="">Posts</a><a class="menu-item" href="/fufeng/tags/" title="">Tags</a><a class="menu-item" href="/fufeng/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">在 Mac 上安装 K8S</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/fufeng/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>伏枫</a></span>&nbsp;<span class="post-category">included in <a href="/fufeng/categories/devops/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>DevOps</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-05-29">2023-05-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;903 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装步骤">安装步骤</a>
+      <ul>
+        <li><a href="#安装-docker">安装 Docker</a></li>
+        <li><a href="#安装-kubectl">安装 Kubectl</a></li>
+        <li><a href="#安装-minikube">安装 Minikube</a></li>
+      </ul>
+    </li>
+    <li><a href="#简单使用-minikube">简单使用 minikube</a>
+      <ul>
+        <li><a href="#启动-minikube">启动 Minikube</a></li>
+        <li><a href="#查看-minikube-状态">查看 Minikube 状态</a></li>
+        <li><a href="#打开-k8s-dashboard">打开 K8S Dashboard</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>本篇文章将介绍如何在 Mac 上使用 minikube 搭建单机版的 Kubernetes。</p>
+<h2 id="安装步骤">安装步骤</h2>
+<h3 id="安装-docker">安装 Docker</h3>
+<p>安装 docker 主要是用于提供容器引擎。直接下载安装即可。</p>
+<p><a href="https://www.docker.com/products/docker-desktop/" target="_blank" rel="noopener noreffer ">下载地址</a></p>
+<h3 id="安装-kubectl">安装 Kubectl</h3>
+<p>推荐使用 home brew 安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install kubectl
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以使用下面的命令查看是否已经安装完毕</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl version --client
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="安装-minikube">安装 Minikube</h3>
+<p>依然推荐使用 home brew 安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install minikube 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以使用下面的命令查看是否已经安装完毕</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">minikube -h
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果能输出一下信息则安装成功</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">minikube provisions and manages <span class="nb">local</span> Kubernetes clusters optimized <span class="k">for</span> development workflows.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Basic Commands:
+</span></span><span class="line"><span class="cl">  start            Starts a <span class="nb">local</span> Kubernetes cluster
+</span></span><span class="line"><span class="cl">  status           Gets the status of a <span class="nb">local</span> Kubernetes cluster
+</span></span><span class="line"><span class="cl">  stop             Stops a running <span class="nb">local</span> Kubernetes cluster
+</span></span><span class="line"><span class="cl">  delete           Deletes a <span class="nb">local</span> Kubernetes cluster
+</span></span><span class="line"><span class="cl">  dashboard        访问在 minikube 集群中运行的 kubernetes dashboard
+</span></span><span class="line"><span class="cl">  pause            pause Kubernetes
+</span></span><span class="line"><span class="cl">  unpause          恢复 Kubernetes
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Images Commands:
+</span></span><span class="line"><span class="cl">  docker-env       Provides instructions to point your terminal<span class="s1">&#39;s docker-cli to the Docker Engine inside minikube.
+</span></span></span><span class="line"><span class="cl"><span class="s1">(Useful for building docker images directly inside minikube)
+</span></span></span><span class="line"><span class="cl"><span class="s1">  podman-env       配置环境以使用 minikube&#39;</span>s Podman service
+</span></span><span class="line"><span class="cl">  cache            Manage cache <span class="k">for</span> images
+</span></span><span class="line"><span class="cl">  image            Manage images
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Configuration and Management Commands:
+</span></span><span class="line"><span class="cl">  addons           Enable or disable a minikube addon
+</span></span><span class="line"><span class="cl">  config           Modify persistent configuration values
+</span></span><span class="line"><span class="cl">  profile          Get or list the current profiles <span class="o">(</span>clusters<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  update-context   Update kubeconfig in <span class="k">case</span> of an IP or port change
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Networking and Connectivity Commands:
+</span></span><span class="line"><span class="cl">  service          Returns a URL to connect to a service
+</span></span><span class="line"><span class="cl">  tunnel           连接到 LoadBalancer 服务
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Advanced Commands:
+</span></span><span class="line"><span class="cl">  mount            将指定的目录挂载到 minikube
+</span></span><span class="line"><span class="cl">  ssh              Log into the minikube environment <span class="o">(</span><span class="k">for</span> debugging<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  kubectl          Run a kubectl binary matching the cluster version
+</span></span><span class="line"><span class="cl">  node             添加，删除或者列出其他的节点
+</span></span><span class="line"><span class="cl">  cp               将指定的文件复制到 minikube
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Troubleshooting Commands:
+</span></span><span class="line"><span class="cl">  ssh-key          Retrieve the ssh identity key path of the specified node
+</span></span><span class="line"><span class="cl">  ssh-host         Retrieve the ssh host key of the specified node
+</span></span><span class="line"><span class="cl">  ip               Retrieves the IP address of the specified node
+</span></span><span class="line"><span class="cl">  logs             Returns logs to debug a <span class="nb">local</span> Kubernetes cluster
+</span></span><span class="line"><span class="cl">  update-check     打印当前和最新版本版本
+</span></span><span class="line"><span class="cl">  version          打印 minikube 版本
+</span></span><span class="line"><span class="cl">  options          显示全局命令行选项列表 <span class="o">(</span>应用于所有命令<span class="o">)</span>。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Other Commands:
+</span></span><span class="line"><span class="cl">  completion       Generate <span class="nb">command</span> completion <span class="k">for</span> a shell
+</span></span><span class="line"><span class="cl">  license          Outputs the licenses of dependencies to a directory
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Use <span class="s2">&#34;minikube &lt;command&gt; --help&#34;</span> <span class="k">for</span> more information about a given command.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="简单使用-minikube">简单使用 minikube</h2>
+<h3 id="启动-minikube">启动 Minikube</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">minikube start
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在启动的过程中，我遇到了如下错误</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">➜  workspace minikube start
+</span></span><span class="line"><span class="cl">😄  Darwin 12.6 <span class="o">(</span>arm64<span class="o">)</span> 上的 minikube v1.30.1
+</span></span><span class="line"><span class="cl">✨  自动选择 docker 驱动
+</span></span><span class="line"><span class="cl">📌  Using Docker Desktop driver with root privileges
+</span></span><span class="line"><span class="cl">👍  Starting control plane node minikube in cluster minikube
+</span></span><span class="line"><span class="cl">🚜  Pulling base image ...
+</span></span><span class="line"><span class="cl">💾  Downloading Kubernetes v1.26.3 preload ...
+</span></span><span class="line"><span class="cl">    &gt; preloaded-images-k8s-v18-v1...:  330.52 MiB / 330.52 MiB  100.00% 6.16 Mi
+</span></span><span class="line"><span class="cl">    &gt; index.docker.io/kicbase/sta...:  336.39 MiB / 336.39 MiB  100.00% 3.35 Mi
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">❗  minikube was unable to download gcr.io/k8s-minikube/kicbase:v0.0.39, but successfully downloaded docker.io/kicbase/stable:v0.0.39 as a fallback image
+</span></span><span class="line"><span class="cl">🔥  Creating docker container <span class="o">(</span><span class="nv">CPUs</span><span class="o">=</span>2, <span class="nv">Memory</span><span class="o">=</span>4000MB<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">❌  Exiting due to RSRC_DOCKER_STORAGE: Docker is out of disk space! <span class="o">(</span>/var is at 100% of capacity<span class="o">)</span>. You can pass <span class="s1">&#39;--force&#39;</span> to skip this check.
+</span></span><span class="line"><span class="cl">💡  建议：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Try one or more of the following to free up space on the device:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    1. Run <span class="s2">&#34;docker system prune&#34;</span> to remove unused Docker data <span class="o">(</span>optionally with <span class="s2">&#34;-a&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    2. Increase the storage allocated to Docker <span class="k">for</span> Desktop by clicking on:
+</span></span><span class="line"><span class="cl">    Docker icon &gt; Preferences &gt; Resources &gt; Disk Image Size
+</span></span><span class="line"><span class="cl">    3. Run <span class="s2">&#34;minikube ssh -- docker system prune&#34;</span> <span class="k">if</span> using the Docker container runtime
+</span></span><span class="line"><span class="cl">🍿  Related issue: https://github.com/kubernetes/minikube/issues/9024
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解决办法也是按照其提示清理了一下 docker 的数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker system prune
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>万万没想到，这一下直接清理出了 2.561GB 的空间🐶</p>
+<h3 id="查看-minikube-状态">查看 Minikube 状态</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">minikube status
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果是如下输出，说明启动成功</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># minikube</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># type: Control Plane</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># host: Running</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># kubelet: Running</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># apiserver: Running</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># kubeconfig: Configured</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="打开-k8s-dashboard">打开 K8S Dashboard</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">minikube dashboard
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行上述命令后，会调起系统的默认浏览器，dashboard UI 如图所示</p>
+<p><img
+        class="lazyload"
+        src="/fufeng/svg/loading.min.svg"
+        data-src="/fufeng/images/kubernetes-dashboard.png"
+        data-srcset="/fufeng/images/kubernetes-dashboard.png, /fufeng/images/kubernetes-dashboard.png 1.5x, /fufeng/images/kubernetes-dashboard.png 2x"
+        data-sizes="auto"
+        alt="/fufeng/images/kubernetes-dashboard.png"
+        title="kubernetes-dashboard" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-05-29</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/fufeng/install-k8s-on-mac/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://huangchao308.github.io/fufeng/install-k8s-on-mac/" data-title="在 Mac 上安装 K8S" data-hashtags="K8S,Kubernetes"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://huangchao308.github.io/fufeng/install-k8s-on-mac/" data-hashtag="K8S"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://huangchao308.github.io/fufeng/install-k8s-on-mac/" data-title="在 Mac 上安装 K8S"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://huangchao308.github.io/fufeng/install-k8s-on-mac/" data-title="在 Mac 上安装 K8S"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://huangchao308.github.io/fufeng/install-k8s-on-mac/" data-title="在 Mac 上安装 K8S" data-ralateuid="fufeng"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/fufeng/tags/k8s/">K8S</a>,&nbsp;<a href="/fufeng/tags/kubernetes/">Kubernetes</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/fufeng/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/fufeng/nodejs-01/" class="prev" rel="prev" title="为什么说 NodeJs 适合 I/O 密集型系统？"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>为什么说 NodeJs 适合 I/O 密集型系统？</a></div>
+</div>
+<div id="comments"><div id="gitalk" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://github.com/gitalk/gitalk"></a>Gitalk</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.111.3">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/fufeng/" target="_blank">伏枫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.13.1/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{"gitalk":{"admin":["huangchao308"],"clientID":"1225f5e9320fa6f48341","clientSecret":"bfe1526e0b04ab41e4731fd143813710611a543e","id":"2023-05-29T17:06:12+08:00","owner":"huangchao308","repo":"fufeng","title":"在 Mac 上安装 K8S"}},"search":{"algoliaAppID":"","algoliaIndex":"","algoliaSearchKey":"","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script type="text/javascript" src="/fufeng/js/theme.min.js"></script></body>
+</html>
