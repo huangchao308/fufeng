@@ -4,7 +4,15 @@
         <link>https://huangchao308.github.io/fufeng/categories/devops/</link>
         <description>DevOps - Category - 伏枫的个人网站</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>530843219@qq.com (伏枫)</managingEditor>
-            <webMaster>530843219@qq.com (伏枫)</webMaster><lastBuildDate>Mon, 29 May 2023 17:06:12 &#43;0800</lastBuildDate><atom:link href="https://huangchao308.github.io/fufeng/categories/devops/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>530843219@qq.com (伏枫)</webMaster><lastBuildDate>Sat, 03 Jun 2023 09:55:47 &#43;0800</lastBuildDate><atom:link href="https://huangchao308.github.io/fufeng/categories/devops/" rel="self" type="application/rss+xml" /><item>
+    <title>在 ubuntu 系统安装 K8S</title>
+    <link>https://huangchao308.github.io/fufeng/install-k8s-on-ubuntu/</link>
+    <pubDate>Sat, 03 Jun 2023 09:55:47 &#43;0800</pubDate>
+    <author>伏枫</author>
+    <guid>https://huangchao308.github.io/fufeng/install-k8s-on-ubuntu/</guid>
+    <description><![CDATA[本篇文章将介绍如何在 ubuntu 系统上安装接近生产环境的 Kubernetes。 安装 Docker 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 sudo apt install -y docker.io sudo service docker start #启动d]]></description>
+</item>
+<item>
     <title>在 Mac 上安装 K8S</title>
     <link>https://huangchao308.github.io/fufeng/install-k8s-on-mac/</link>
     <pubDate>Mon, 29 May 2023 17:06:12 &#43;0800</pubDate>
