@@ -42,7 +42,9 @@ plugins=(git vscode)
 ```
 插件列表详见[plugins](https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins)
 
-## 安装 VSCode
+## VSCode
+
+### 安装 VSCode
 
 直接去官网（[vscode](https://code.visualstudio.com/)）下载安装即可，如果发现下载缓慢，可以参考这篇[文章](https://zhuanlan.zhihu.com/p/112215618)
 
