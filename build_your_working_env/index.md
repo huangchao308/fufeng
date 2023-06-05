@@ -3,13 +3,20 @@
 
 本文用于记录如何搭建适合自己的高效工作环境，适用于 MacBook。
 
+## HomeBrew
+
+### 安装
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
 ## Oh, My ZSH~
 
 zsh 是 Linux 和 MacOS 常用的命令解释器，相比于默认的 Bash，Zsh 有更多的自定义选项，并支持扩展。因此 zsh 可以实现更强大的命令补全，命令高亮等一系列酷炫功能。
 
 不过配置 zsh 是个比较麻烦的事情，于是有位小哥 Robby Russell 在 github 上分享了他的 zsh 配置（[ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)）。他的默认主题就很对我的胃口。
 
-### 安装 Oh, My ZSH
+### 安装
 
 如果有条件翻墙，直接执行下面的命令即可
 
@@ -42,9 +49,28 @@ plugins=(git vscode)
 ```
 插件列表详见[plugins](https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins)
 
+## Git
+
+### 安装
+```bash
+brew install git
+```
+参考[Download for macOS](https://git-scm.com/download/mac)
+
+### 设置常用命令的别名
+```bash
+git config --global alias.st 'status --ahead-behind -b'
+git config --global alias.cm 'commit -m'
+git config --global alias.cam 'commit -a -m'
+git config --global alias.br 'branch'
+git config --global alias.ck 'checkout'
+git config --global alias.lg 'log --graph --oneline --decorate'
+git config --global alias.gl 'config --global -l'
+```
+
 ## VSCode
 
-### 安装 VSCode
+### 安装
 
 直接去官网（[vscode](https://code.visualstudio.com/)）下载安装即可，如果发现下载缓慢，可以参考这篇[文章](https://zhuanlan.zhihu.com/p/112215618)
 
@@ -86,4 +112,6 @@ code .
 * [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 * [Rust Test Lens](https://marketplace.visualstudio.com/items?itemName=hdevalke.rust-test-lens)
 * [crates](https://marketplace.visualstudio.com/items?itemName=serayuzgur.crates)
+
+
 

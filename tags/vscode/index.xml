@@ -10,7 +10,7 @@
     <pubDate>Mon, 05 Jun 2023 18:57:32 &#43;0800</pubDate>
     <author>伏枫</author>
     <guid>https://huangchao308.github.io/fufeng/build_your_working_env/</guid>
-    <description><![CDATA[本文用于记录如何搭建适合自己的高效工作环境，适用于 MacBook。 Oh, My ZSH~ zsh 是 Linux 和 MacOS 常用的命令解释器，相比于默认的 Bash，Zsh 有更多的自定]]></description>
+    <description><![CDATA[本文用于记录如何搭建适合自己的高效工作环境，适用于 MacBook。 HomeBrew 安装 1 /bin/bash -c &#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&#34; Oh, My ZSH~ zsh 是 Linux 和 MacOS 常用的命令解释器，相比于默认的 Bash，]]></description>
 </item>
 </channel>
 </rss>
