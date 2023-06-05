@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>tools - Category - 伏枫的个人网站</title>
+        <link>https://huangchao308.github.io/fufeng/categories/tools/</link>
+        <description>tools - Category - 伏枫的个人网站</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>530843219@qq.com (伏枫)</managingEditor>
+            <webMaster>530843219@qq.com (伏枫)</webMaster><lastBuildDate>Mon, 05 Jun 2023 18:57:32 &#43;0800</lastBuildDate><atom:link href="https://huangchao308.github.io/fufeng/categories/tools/" rel="self" type="application/rss+xml" /><item>
+    <title>搭建自己的工作环境</title>
+    <link>https://huangchao308.github.io/fufeng/build_your_working_env/</link>
+    <pubDate>Mon, 05 Jun 2023 18:57:32 &#43;0800</pubDate>
+    <author>伏枫</author>
+    <guid>https://huangchao308.github.io/fufeng/build_your_working_env/</guid>
+    <description><![CDATA[本文用于记录如何搭建适合自己的高效工作环境，适用于 MacBook。 Oh, My ZSH~ zsh 是 Linux 和 MacOS 常用的命令解释器，相比于默认的 Bash，Zsh 有更多的自定]]></description>
+</item>
+</channel>
+</rss>
