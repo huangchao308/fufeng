@@ -94,6 +94,7 @@ code .
 * [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
 * [Git History](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
 * [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+* [Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
 * [Makefile Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.makefile-tools)
 * [Local History](https://marketplace.visualstudio.com/items?itemName=xyz.local-history)
 * [Project Manager](https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager)
@@ -112,6 +113,4 @@ code .
 * [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 * [Rust Test Lens](https://marketplace.visualstudio.com/items?itemName=hdevalke.rust-test-lens)
 * [crates](https://marketplace.visualstudio.com/items?itemName=serayuzgur.crates)
-
-
 
