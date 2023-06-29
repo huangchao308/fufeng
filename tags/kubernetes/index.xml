@@ -5,6 +5,14 @@
         <description>Kubernetes - Tag - 伏枫的个人网站</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>530843219@qq.com (伏枫)</managingEditor>
             <webMaster>530843219@qq.com (伏枫)</webMaster><lastBuildDate>Sat, 03 Jun 2023 09:55:47 &#43;0800</lastBuildDate><atom:link href="https://huangchao308.github.io/fufeng/tags/kubernetes/" rel="self" type="application/rss+xml" /><item>
+    <title>在 Kubernetes 中部署 NSQ</title>
+    <link>https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/</link>
+    <pubDate>Sat, 03 Jun 2023 09:55:47 &#43;0800</pubDate>
+    <author>伏枫</author>
+    <guid>https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/</guid>
+    <description><![CDATA[本文将介绍如何在 Kubernetes 中部署 NSQ。 什么是 NSQ？ NSQ是一个基于 Go 语言的分布式实时消息平台, 它具有分布式、去中心化的拓扑结构，支持无限水平扩展]]></description>
+</item>
+<item>
     <title>在 ubuntu 系统安装 K8S</title>
     <link>https://huangchao308.github.io/fufeng/install-k8s-on-ubuntu/</link>
     <pubDate>Sat, 03 Jun 2023 09:55:47 &#43;0800</pubDate>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>在 Kubernetes 中部署 NSQ - 伏枫的个人网站</title><meta name="Description" content="伏枫的网站"><meta property="og:title" content="在 Kubernetes 中部署 NSQ" />
+<meta property="og:description" content="本文将介绍如何在 Kubernetes 中部署 NSQ。 什么是 NSQ？ NSQ是一个基于 Go 语言的分布式实时消息平台, 它具有分布式、去中心化的拓扑结构，支持无限水平扩展" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/" /><meta property="og:image" content="https://huangchao308.github.io/fufeng/"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-03T09:55:47+08:00" />
+<meta property="article:modified_time" content="2023-06-03T09:55:47+08:00" /><meta property="og:site_name" content="伏枫的网站" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://huangchao308.github.io/fufeng/"/>
+
+<meta name="twitter:title" content="在 Kubernetes 中部署 NSQ"/>
+<meta name="twitter:description" content="本文将介绍如何在 Kubernetes 中部署 NSQ。 什么是 NSQ？ NSQ是一个基于 Go 语言的分布式实时消息平台, 它具有分布式、去中心化的拓扑结构，支持无限水平扩展"/>
+<meta name="application-name" content="伏枫的个人网站">
+<meta name="apple-mobile-web-app-title" content="伏枫的个人网站"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/" /><link rel="prev" href="https://huangchao308.github.io/fufeng/install-k8s-on-ubuntu/" /><link rel="next" href="https://huangchao308.github.io/fufeng/build_your_working_env/" /><link rel="stylesheet" href="/fufeng/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "在 Kubernetes 中部署 NSQ",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/huangchao308.github.io\/fufeng\/deploy_nsq_in_k8s\/"
+        },"image": ["https:\/\/huangchao308.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, Kubernetes, nsq","wordcount":  1278 ,
+        "url": "https:\/\/huangchao308.github.io\/fufeng\/deploy_nsq_in_k8s\/","datePublished": "2023-06-03T09:55:47+08:00","dateModified": "2023-06-03T09:55:47+08:00","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": "https:\/\/huangchao308.github.io\/images\/avatar.png"},"author": {
+                "@type": "Person",
+                "name": "伏枫"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/fufeng/" title="伏枫的个人网站">伏枫的网站</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/fufeng/posts/"> Posts </a><a class="menu-item" href="/fufeng/tags/"> Tags </a><a class="menu-item" href="/fufeng/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/fufeng/" title="伏枫的个人网站">伏枫的网站</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/fufeng/posts/" title="">Posts</a><a class="menu-item" href="/fufeng/tags/" title="">Tags</a><a class="menu-item" href="/fufeng/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">在 Kubernetes 中部署 NSQ</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/fufeng/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>伏枫</a></span>&nbsp;<span class="post-category">included in <a href="/fufeng/categories/devops/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>DevOps</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-06-03">2023-06-03</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1278 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是-nsq">什么是 NSQ？</a></li>
+    <li><a href="#部署步骤">部署步骤</a>
+      <ul>
+        <li><a href="#部署-nsqlookupd">部署 nsqlookupd</a></li>
+        <li><a href="#部署-nsqd">部署 nsqd</a></li>
+        <li><a href="#可选部署-nsqadmin">[可选]部署 nsqadmin</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文档">参考文档</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>本文将介绍如何在 Kubernetes 中部署 NSQ。</p>
+<h2 id="什么是-nsq">什么是 NSQ？</h2>
+<p>NSQ是一个基于 Go 语言的分布式实时消息平台, 它具有分布式、去中心化的拓扑结构，支持无限水平扩展。无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。另外，NSQ 非常容易配置和部署, 且支持众多的消息协议。支持多种客户端，协议简单，如果有兴趣，可参照协议自已实现一个也可以。简单点说，NSQ 就是一个基于Go 语言实现的轻量级消息平台。</p>
+<p>NSQ 包含如下组件</p>
+<ul>
+<li>nsqd: Nsqd 是接收、队列和向客户端传递消息的守护进程</li>
+<li>nsqlookupd: Nsqlookupd 是管理拓扑信息的守护进程。客户端查询 nsqlookupd 以发现特定主题的 nsqd producers，nsqd 节点广播 topic 和 channel</li>
+<li>nsqadmin: Nsqadmin 是一套 Web 用户界面，可实时查看集群的统计数据和执行相应的管理任务</li>
+</ul>
+<h2 id="部署步骤">部署步骤</h2>
+<p>在正式部署之前，先分享几个小技巧</p>
+<ul>
+<li>可以通过如下命令生成相应的 API 对象模板
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 生成 Deployment 配置模板</span>
+</span></span><span class="line"><span class="cl">kubectl create deploy nsqd-dep --image<span class="o">=</span>nsqio/nsq --dry-run<span class="o">=</span>client -o yaml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成 service 配置模板</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 为名为 nsqd-dep 的 Deployment 对象生成对应的 service 配置模板</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 并指定暴露出去的 port 和对应 Deployment 的 port</span>
+</span></span><span class="line"><span class="cl">kubectl expose deploy nsqd-dep --port<span class="o">=</span><span class="m">4151</span> --target-port<span class="o">=</span><span class="m">4151</span> --dry-run<span class="o">=</span>client -o yaml 
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>可以通过命令 <code>kubectl explain</code> 查看参数的具体含义
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看 Deployment 的配置的各项参数的含义</span>
+</span></span><span class="line"><span class="cl">kubectl explain deploy
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看 Deployment spec.template.spec 的配置的各项参数的含义</span>
+</span></span><span class="line"><span class="cl">kubectl explain deploy.spec.template.spec
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="部署-nsqlookupd">部署 nsqlookupd</h3>
+<p>基于 nsqlookupd 的职责，需要使其在集群内以固定的方式被 nsqd 节点发现，所以需要为 nsqlookupd 配备固定的域名。具体做法为部署其为 service，具体配置如下</p>
+<details><summary>nsqlookupd</summary>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqlookupd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nsqlookupd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqlookupd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqlookupd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nsqio/nsq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nsq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">/nsqlookupd</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">4161</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">4160</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">status</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqlookupd-svr</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nsqlookupd-svr</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">4161</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">4161</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">4160</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">4160</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqlookupd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">status</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">loadBalancer</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></details>
+<h3 id="部署-nsqd">部署 nsqd</h3>
+<p>部署 nsqd 需要注意两点：</p>
+<ol>
+<li>设置容器的启动参数 <code>-lookupd-tcp-address</code>，需要将 nsqlookupd 的域名配置为参数 <code>-lookupd-tcp-address</code> 的值。在 K8S 中，service 的固定域名格式为 <code>{service 对象名}.{namespace 名字}.svc.cluster.local</code>，但很多时候也可以省略后面的部分，直接写<code>{service 对象名}.{namespace 名字}</code>甚至<code>{service 对象名}</code>就足够了，默认会使用对象所在的名 namespace 名字。</li>
+<li>需要指定持久化存储，保证 pod 在被重建后依然能获取到数据（topic, channel 等）。下面是一个使用 NFS 做持久化的配置示例
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w"> </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-client-retain</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l">k8s-sigs.io/nfs-subdir-external-provisioner</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">parameters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">onDelete</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;retain&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span>---<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-dyn-10m-pvc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-client-retain</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span>- <span class="l">ReadWriteMany</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">10Mi</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>具体配置如下</p>
+<details><summary>nsqd</summary>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nsqd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqd-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-dyn-10m-vol</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-dyn-10m-pvc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nsqio/nsq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nsq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- -<span class="l">lookupd-tcp-address=nsqlookupd-svr:4160</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- -<span class="l">data-path=/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">/nsqd</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">4150</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">4151</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-dyn-10m-vol</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">status</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></details>
+<h3 id="可选部署-nsqadmin">[可选]部署 nsqadmin</h3>
+<p>部署 nsqadmin 同样需要指定 nsqlookupd 的地址，配置如下</p>
+<details><summary>nsqadmin</summary>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqadmin-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nsqadmin-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqadmin-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqadmin-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nsqio/nsq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nsq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- -<span class="l">lookupd-http-address=nsqlookupd-svr:4161</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">/nsqadmin</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">4150</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">4151</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">status</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqadmin-svr</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nsqadmin-svr</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">4161</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">4171</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nsqadmin-dep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">status</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">loadBalancer</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></details>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="https://github.com/nsqio/nsq" target="_blank" rel="noopener noreffer ">github: nsqio/nsq</a>
+<a href="https://nsq.io/overview/quick_start.html" target="_blank" rel="noopener noreffer ">nsq doc</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-06-03</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/fufeng/deploy_nsq_in_k8s/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/" data-title="在 Kubernetes 中部署 NSQ" data-hashtags="K8S,Kubernetes,nsq"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/" data-hashtag="K8S"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/" data-title="在 Kubernetes 中部署 NSQ"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/" data-title="在 Kubernetes 中部署 NSQ"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/" data-title="在 Kubernetes 中部署 NSQ" data-ralateuid="fufeng"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/fufeng/tags/k8s/">K8S</a>,&nbsp;<a href="/fufeng/tags/kubernetes/">Kubernetes</a>,&nbsp;<a href="/fufeng/tags/nsq/">nsq</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/fufeng/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/fufeng/install-k8s-on-ubuntu/" class="prev" rel="prev" title="在 ubuntu 系统安装 K8S"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>在 ubuntu 系统安装 K8S</a>
+            <a href="/fufeng/build_your_working_env/" class="next" rel="next" title="搭建自己的工作环境">搭建自己的工作环境<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"><div id="gitalk" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://github.com/gitalk/gitalk"></a>Gitalk</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.111.3">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/fufeng/" target="_blank">伏枫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.13.1/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{"gitalk":{"admin":["huangchao308"],"clientID":"1225f5e9320fa6f48341","clientSecret":"bfe1526e0b04ab41e4731fd143813710611a543e","id":"2023-06-03T09:55:47+08:00","owner":"huangchao308","repo":"fufeng","title":"在 Kubernetes 中部署 NSQ"}},"search":{"algoliaAppID":"","algoliaIndex":"","algoliaSearchKey":"","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script type="text/javascript" src="/fufeng/js/theme.min.js"></script></body>
+</html>

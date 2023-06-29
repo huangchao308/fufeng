@@ -13,6 +13,14 @@
     <description><![CDATA[本文用于记录如何搭建适合自己的高效工作环境，适用于 MacBook。 HomeBrew 安装 1 /bin/bash -c &#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&#34; Oh, My ZSH~ zsh 是 Linux 和 MacOS 常用的命令解释器，相比于默认的 Bash，]]></description>
 </item>
 <item>
+    <title>在 Kubernetes 中部署 NSQ</title>
+    <link>https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/</link>
+    <pubDate>Sat, 03 Jun 2023 09:55:47 &#43;0800</pubDate>
+    <author>伏枫</author>
+    <guid>https://huangchao308.github.io/fufeng/deploy_nsq_in_k8s/</guid>
+    <description><![CDATA[本文将介绍如何在 Kubernetes 中部署 NSQ。 什么是 NSQ？ NSQ是一个基于 Go 语言的分布式实时消息平台, 它具有分布式、去中心化的拓扑结构，支持无限水平扩展]]></description>
+</item>
+<item>
     <title>在 ubuntu 系统安装 K8S</title>
     <link>https://huangchao308.github.io/fufeng/install-k8s-on-ubuntu/</link>
     <pubDate>Sat, 03 Jun 2023 09:55:47 &#43;0800</pubDate>
