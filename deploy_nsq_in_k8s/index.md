@@ -242,6 +242,7 @@ status:
 </details>
 
 ## 参考文档
-[github: nsqio/nsq](https://github.com/nsqio/nsq)
-[nsq doc](https://nsq.io/overview/quick_start.html)
+
+* [github: nsqio/nsq](https://github.com/nsqio/nsq)
+* [nsq doc](https://nsq.io/overview/quick_start.html)
 
